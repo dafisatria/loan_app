@@ -10,5 +10,4 @@ import java.util.Optional;
 
 @Repository
 public interface InstalmentTypeRepository extends JpaRepository<InstalmentType, String>{
-    Optional<InstalmentType> findByInstalmentType(EInstalmentType instalmentType);
 }
