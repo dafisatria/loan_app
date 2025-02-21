@@ -16,6 +16,6 @@ public class InstalmentType {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Enumerated(EnumType.STRING)
-    @Column(name = "instalment_type")
+    @Column(name = "instalment_type", nullable = false, unique = true)
     private EInstalmentType instalmentType;
 }
