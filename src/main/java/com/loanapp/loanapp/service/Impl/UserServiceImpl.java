@@ -1,6 +1,7 @@
 package com.loanapp.loanapp.service.Impl;
 
 import com.loanapp.loanapp.constant.ERole;
+import com.loanapp.loanapp.entity.Customer;
 import com.loanapp.loanapp.entity.Role;
 import com.loanapp.loanapp.entity.User;
 import com.loanapp.loanapp.model.request.AuthRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(roles)
                 .build();
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
         return RegisterResponse.builder()
                 .email(user.getEmail())
                 .role(user.getRoles().stream().map(Role::getRole).toList())
@@ -58,5 +60,18 @@ public class UserServiceImpl implements UserService {
                 .role(user.getRoles().stream().map(Role::getRole).toList())
                 .token(token)
                 .build();
+    }
+
+    @Override
+    public RegisterResponse getUserById(String id) {
+        User user = findByIdOrThrowNotFound(id);
+        return RegisterResponse.builder()
+                .email(user.getEmail())
+                .role(user.getRoles().stream().map(Role::getRole).toList())
+                .build();
+    }
+
+    public User findByIdOrThrowNotFound(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
