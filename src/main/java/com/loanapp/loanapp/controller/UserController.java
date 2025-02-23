@@ -1,7 +1,8 @@
 package com.loanapp.loanapp.controller;
 
-import com.loanapp.loanapp.model.request.RegisterRequest;
+import com.loanapp.loanapp.model.request.AuthRequest;
 import com.loanapp.loanapp.model.response.CommonResponse;
+import com.loanapp.loanapp.model.response.LoginResponse;
 import com.loanapp.loanapp.model.response.RegisterResponse;
 import com.loanapp.loanapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,21 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register-customer")
-    public ResponseEntity<CommonResponse<RegisterResponse>> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<CommonResponse<RegisterResponse>> register(@RequestBody AuthRequest request) {
         RegisterResponse customer = userService.registerCustomer(request);
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
                 .message("Successfully created customer account")
                 .data(customer)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<CommonResponse<LoginResponse>> login(@RequestBody AuthRequest request) {
+        LoginResponse login = userService.login(request);
+        CommonResponse<LoginResponse> response = CommonResponse.<LoginResponse>builder()
+                .message("Successfully logged in")
+                .data(login)
                 .build();
         return ResponseEntity.ok(response);
     }
