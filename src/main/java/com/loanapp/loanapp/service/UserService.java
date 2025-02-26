@@ -9,4 +9,5 @@ public interface UserService {
     RegisterResponse registerCustomer(AuthRequest request);
     LoginResponse login(AuthRequest request);
     RegisterResponse getUserById(String id);
+    RegisterResponse registerAdmin(AuthRequest request);
 }

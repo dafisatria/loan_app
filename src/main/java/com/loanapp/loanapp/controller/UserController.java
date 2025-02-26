@@ -21,7 +21,7 @@ public class UserController {
     public ResponseEntity<CommonResponse<RegisterResponse>> getUserById(@PathVariable String id) {
         RegisterResponse user = userService.getUserById(id);
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
-                .message("Successfully logged in")
+                .message("Successfully retrieved user")
                 .data(user)
                 .build();
         return ResponseEntity.ok(response);

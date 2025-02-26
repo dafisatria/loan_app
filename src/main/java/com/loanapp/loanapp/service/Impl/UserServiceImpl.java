@@ -71,6 +71,26 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public RegisterResponse registerAdmin(AuthRequest request) {
+        Role roleAdmin = roleRepository.findByRole(ERole.ROLE_ADMIN);
+        Role roleStaff = roleRepository.findByRole(ERole.ROLE_STAFF);
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleAdmin);
+        roles.add(roleStaff);
+
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .roles(roles)
+                .build();
+        userRepository.saveAndFlush(user);
+        return RegisterResponse.builder()
+                .email(user.getEmail())
+                .role(user.getRoles().stream().map(Role::getRole).toList())
+                .build();
+    }
+
     public User findByIdOrThrowNotFound(String id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
