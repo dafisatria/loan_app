@@ -1,5 +1,6 @@
 package com.loanapp.loanapp.security;
 
+import com.loanapp.loanapp.constant.ERole;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -26,12 +28,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         if (authHeader != null && jwtTokenProvider.validateToken(authHeader)) {
             String email = jwtTokenProvider.getEmailFromToken(authHeader);
-            String role = jwtTokenProvider.getRoleFromToken(authHeader);
+            List<ERole> roles = jwtTokenProvider.getRoleFromToken(authHeader);
 
-            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
-            //Menyimpan authtentikasi
+
+            List<GrantedAuthority> authorities = roles.stream()
+                    .map(role -> new SimpleGrantedAuthority(role.name()))
+                    .collect(Collectors.toList());
+
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
-            // untuk spring scurity mengenali user yang sudah login
+
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
         filterChain.doFilter(request, response);

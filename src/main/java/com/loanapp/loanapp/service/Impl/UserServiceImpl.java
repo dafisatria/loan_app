@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password");
         }
-        String token = jwtTokenProvider.generateToken(user.getEmail(), user.getRoles().stream().map(Role::getRole).toList().toString());
+        String token = jwtTokenProvider.generateToken(user.getEmail(), user.getRoles().stream().map(Role::getRole).toList());
         return LoginResponse.builder()
                 .email(user.getEmail())
                 .role(user.getRoles().stream().map(Role::getRole).toList())
