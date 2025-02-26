@@ -7,6 +7,7 @@ import com.loanapp.loanapp.service.LoanTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class LoanTransactionController {
     private final LoanTransactionService loanTransactionService;
 
     @PostMapping
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CommonResponse<LoanTransactionResponse>> create(@RequestBody LoanTransactionRequest loanTransactionRequest) {
         LoanTransactionResponse loanTransactionResponse = loanTransactionService.requestLoan(loanTransactionRequest);
         CommonResponse<LoanTransactionResponse> response =  CommonResponse.<LoanTransactionResponse>builder()
