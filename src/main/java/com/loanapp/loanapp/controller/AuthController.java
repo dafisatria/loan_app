@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final UserService userService;
 
-    @PostMapping("/register-customer")
+    @PostMapping("/signup-customer")
     public ResponseEntity<CommonResponse<RegisterResponse>> registerCustomer(@RequestBody AuthRequest request) {
         RegisterResponse customer = userService.registerCustomer(request);
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
@@ -26,7 +26,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<CommonResponse<LoginResponse>> login(@RequestBody AuthRequest request) {
         LoginResponse login = userService.login(request);
         CommonResponse<LoginResponse> response = CommonResponse.<LoginResponse>builder()
@@ -36,7 +36,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/register-admin")
+    @PostMapping("/signup-admin")
     public ResponseEntity<CommonResponse<RegisterResponse>> registerAdmin(@RequestBody AuthRequest request) {
         RegisterResponse admin = userService.registerAdmin(request);
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
