@@ -5,6 +5,7 @@ import com.loanapp.loanapp.model.response.CommonResponse;
 import com.loanapp.loanapp.service.LoanTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class LoanTypeController {
     private final LoanTypeService loanTypeService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<CommonResponse<LoanType>> createLoanType(@RequestBody LoanType loanType) {
         LoanType newLoanType = loanTypeService.createLoanType(loanType);
         CommonResponse<LoanType> response = CommonResponse.<LoanType>builder()
@@ -43,6 +45,7 @@ public class LoanTypeController {
         return ResponseEntity.ok(response);
     }
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<CommonResponse<LoanType>> updateLoanType(@RequestBody LoanType loanType) {
         LoanType updatedLoanType = loanTypeService.updateLoanType(loanType);
         CommonResponse<LoanType> response = CommonResponse.<LoanType>builder()
@@ -52,6 +55,7 @@ public class LoanTypeController {
         return ResponseEntity.ok(response);
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<CommonResponse<String>> deleteLoanTypeById(@PathVariable String id) {
         loanTypeService.deleteLoanTypeById(id);
         CommonResponse<String> response = CommonResponse.<String>builder()

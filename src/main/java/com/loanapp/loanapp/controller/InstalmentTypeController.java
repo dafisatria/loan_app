@@ -6,6 +6,7 @@ import com.loanapp.loanapp.model.response.CommonResponse;
 import com.loanapp.loanapp.service.InstalmentTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class InstalmentTypeController {
     private final InstalmentTypeService instalmentTypeService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<CommonResponse<InstalmentType>> createInstalmentType(@RequestBody InstalmentType instalmentType) {
         InstalmentType newInstalmentType = instalmentTypeService.createInstalmentType(instalmentType);
         CommonResponse<InstalmentType> response = CommonResponse.<InstalmentType>builder()
@@ -45,6 +47,7 @@ public class InstalmentTypeController {
         return ResponseEntity.ok(response);
     }
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<CommonResponse<InstalmentType>> updateInstalmentType(@RequestBody InstalmentType instalmentType) {
         InstalmentType updateInstalmentType = instalmentTypeService.updateInstalmentType(instalmentType);
         CommonResponse<InstalmentType> response = CommonResponse.<InstalmentType>builder()
@@ -54,6 +57,7 @@ public class InstalmentTypeController {
         return ResponseEntity.ok(response);
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<CommonResponse<String>> deleteInstalmentType(@PathVariable String id) {
         instalmentTypeService.deleteInstalmentType(id);
         CommonResponse<String> response = CommonResponse.<String>builder()
