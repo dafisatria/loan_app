@@ -25,7 +25,7 @@ public class RoleSeeder implements CommandLineRunner {
                     .anyMatch(role -> role.getRole().equals(eRole));
 
             if (!roleExists) {
-                roleRepository.save(new Role(null, eRole));
+                roleRepository.save(Role.builder().role(eRole).build());
             }
         }
     }
