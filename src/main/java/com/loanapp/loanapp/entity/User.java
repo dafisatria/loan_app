@@ -21,7 +21,12 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "m_user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
+    )
     @JsonBackReference
     private List<Role> roles;
 }

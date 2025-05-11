@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,11 +55,19 @@ public class LoanTransactionServiceImpl implements LoanTransactionService {
                 .instalmentTypeId(loanTrx.getInstalmentType().getId())
                 .customerId(loanTrx.getCustomer().getId())
                 .nominal(loanTrx.getNominal())
-                .approvedAt(loanTrx.getApprovedAt().toString())
+                .approvedAt(Optional.ofNullable(loanTrx.getApprovedAt())
+                        .map(Object::toString)
+                        .orElse("-"))
                 .approvedBy(loanTrx.getApprovedBy())
-                .approvalStatus(loanTrx.getApprovalStatus().toString())
-                .createdAt(loanTrx.getCreatedAt().toString())
-                .updatedAt(loanTrx.getUpdatedAt().toString())
+                .approvalStatus(Optional.ofNullable(loanTrx.getApprovalStatus())
+                        .map(Object::toString)
+                        .orElse("-"))
+                .createdAt(Optional.ofNullable(loanTrx.getCreatedAt())
+                        .map(Object::toString)
+                        .orElse("-"))
+                .updatedAt(Optional.ofNullable(loanTrx.getUpdatedAt())
+                        .map(Object::toString)
+                        .orElse("-"))
                 .build();
     }
     public LoanTransaction findByIdOrThrowNotFound(String id) {
